@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>SEVENTHGEAR </title>
+    <link rel="icon" href="seventh.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #f0f0f0;
+            --secondary-color: #2a2a2a;
+            --accent-color: #d0d0d0;
+            --text-color: #ffffff;
+            --dark-text: #444444;
+            --light-gray: rgba(240, 240, 240, 0.8);
+            --dark-gray: rgb(42, 42, 42);
+            --transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            zoom: 0.9;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Teko', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--light-gray);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-color);
+            border-color: var(--text-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--text-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-solid {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-solid:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .section-title {
+            font-size: 3.2rem;
+            line-height: 1;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 35px;
+            max-width: 600px;
+        }
+
+        /* Header */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 25px 0;
+            background-color: rgba(42, 42, 42, 0.95);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .main-header.scrolled {
+            padding: 15px 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .main-nav {
+            margin-left: auto;
+            margin-right: 50px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 36px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .main-nav a {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: none;
+        }
+
+        .menu-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.615) 30%, transparent 70%);
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 15%;
+            left: 10%;
+            max-width: 600px;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 0.9;
+            margin-bottom: 18px;
+            color: var(--text-color);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.5s forwards;
+        }
+
+        .hero-text {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--light-gray);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s 0.7s forwards;
+        }
+          /* Estilos adicionais para o modal */
+          .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .news-card {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 60%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+            filter: brightness(0.8);
+        }
+
+        .news-card:hover .news-image {
+            transform: scale(1.05);
+            filter: brightness(1);
+        }
+
+        .news-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(20, 20, 20, 0.95), transparent);
+            z-index: 2;
+        }
+
+        .news-date {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+
+        .news-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-family: 'Teko', sans-serif;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .news-excerpt {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--light-gray);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .read-more i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: var(--text-color);
+        }
+
+        .read-more:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Estilos Premium para o Modal */
+        .news-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            overflow-y: auto;
+            padding: 60px 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .news-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%);
+            padding: 0;
+            position: relative;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .news-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(240, 240, 240, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: 1px solid rgba(240, 240, 240, 0.2);
+        }
+
+        .close-modal:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: rotate(90deg);
+        }
+
+        .modal-image-container {
+            height: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .modal-text-content {
+            padding: 50px;
+        }
+
+        .modal-date {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+
+        .modal-title {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+            font-family: 'Teko', sans-serif;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .modal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .modal-fulltext {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .modal-fulltext p {
+            margin-bottom: 25px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(240, 240, 240, 0.1);
+        }
+
+        .modal-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(240, 240, 240, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .modal-social a:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .modal-text-content {
+                padding: 40px;
+            }
+            
+            .modal-title {
+                font-size: 2.4rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .news-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+            
+            .modal-image-container {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modal-text-content {
+                padding: 30px;
+            }
+            
+            .modal-title {
+                font-size: 2rem;
+            }
+            
+            .modal-fulltext {
+                font-size: 1rem;
+            }
+            
+            .news-card {
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .modal-image-container {
+                height: 250px;
+            }
+            
+            .modal-text-content {
+                padding: 25px 20px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .news-modal {
+                padding: 40px 15px;
+            }
+        }
+
+
+        /* Model Showcase */
+        .model-showcase {
+            padding: 120px 0;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .model-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .model-nav-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+            background: linear-gradient(to right, var(--primary-color) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .model-nav-btn:hover, .model-nav-btn.active {
+            background-position: left bottom;
+        }
+
+        .model-carousel-3d {
+            position: relative;
+            height: 80vh;
+            min-height: 700px;
+            margin-bottom: 80px;
+        }
+
+        .model-slide-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform: scale(0.9) translateX(100px);
+            pointer-events: none;
+        }
+
+        .model-slide-3d.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            pointer-events: all;
+        }
+
+        .model-3d-container {
+            display: flex;
+            height: 100%;
+            position: relative;
+        }
+
+        .model-3d-view {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-3d-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1);
+            transition: transform 8s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+        }
+
+        .model-slide-3d.active .model-3d-image {
+            transform: scale(1);
+        }
+
+        .model-3d-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .model-info-3d {
+            width: 40%;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .model-name {
+            font-size: 4.5rem;
+            line-height: 0.9;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            background: linear-gradient(to right, var(--primary-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .model-tagline {
+            font-size: 1.4rem;
+            font-family: 'Roboto Condensed', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .model-description {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .model-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spec-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(240, 240, 240, 0.1);
+            border-radius: 50%;
+        }
+
+        .spec-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            font-family: 'Teko', sans-serif;
+            line-height: 1;
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .model-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .model-thumbnails {
+            position: relative;
+            z-index: 3;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .model-thumbnail {
+            width: 120px;
+            height: 80px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border: 2px solid transparent;
+        }
+
+        .model-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail-name {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .model-thumbnail:hover, .model-thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        .model-thumbnail:hover img {
+            transform: scale(1.1);
+        }
+
+        .model-thumbnail:hover .thumbnail-overlay {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .model-thumbnail:hover .thumbnail-name, 
+        .model-thumbnail.active .thumbnail-name {
+            bottom: 10px;
+            opacity: 1;
+        }
+
+        .model-thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        .model-thumbnail.active .thumbnail-overlay {
+            background: transparent;
+        }
+
+        /* Technology Section */
+        .technology-section {
+            padding: 100px 0;
+            background-color: var(--secondary-color);
+            border-top: 1px solid rgba(240, 240, 240, 0.1);
+            border-bottom: 1px solid rgba(240, 240, 240, 0.1);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 45px;
+        }
+
+        .tech-card {
+            padding: 35px;
+            background-color: rgba(42, 42, 42, 0.7);
+            border: 1px solid rgba(240, 240, 240, 0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(240,240,240,0.05) 0%, transparent 100%);
+            z-index: 0;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+        }
+
+        .tech-icon {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-title {
+            font-size: 1.7rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-description {
+            font-size: 0.95rem;
+            color: var(--light-gray);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Configurator Section */
+        .configurator-section {
+            padding: 100px 0;
+            background-color: var(--secondary-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .configurator-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1283&q=80') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .configurator-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .configurator-title {
+            font-size: 3.6rem;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        .configurator-subtitle {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 35px;
+        }
+
+        /* News Section */
+        .news-section {
+            padding: 100px 0;
+            background-color: var(--secondary-color);
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+        }
+
+        .news-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .news-nav-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .news-nav-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .news-nav-btn.active, .news-nav-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .news-nav-btn.active::after, .news-nav-btn:hover::after {
+            width: 100%;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .news-card {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+            border: 1px solid rgba(240, 240, 240, 0.1);
+            transition: var(--transition);
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .news-card:hover .news-image {
+            transform: scale(1.1);
+        }
+
+        .news-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(42,42,42,0.95), transparent);
+        }
+
+        .news-date {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .news-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .news-excerpt {
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+            color: var(--light-gray);
+        }
+
+        /* History Section */
+        .history-section {
+            padding: 100px 0;
+            background-color: var(--secondary-color);
+        }
+
+        .history-timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .history-timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            padding: 18px 35px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 35px;
+            background-color: rgba(42, 42, 42, 0.7);
+            border: 1px solid rgba(240, 240, 240, 0.1);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover .timeline-content {
+            border-color: var(--primary-color);
+            transform: translateY(-4px);
+        }
+
+        .timeline-year {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--light-gray);
+        }
+
+        /* Footer */
+        .main-footer {
+            padding: 70px 0 25px;
+            background-color: #222;
+            border-top: 1px solid rgba(240, 240, 240, 0.1);
+        }
+
+        .footer-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .footer-description {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            margin-bottom: 22px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--light-gray);
+            color: var(--light-gray);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-links-container h3 {
+            font-size: 1.2rem;
+            margin-bottom: 22px;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .footer-links-container h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .footer-newsletter p {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 18px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 10px 12px;
+            background-color: rgba(240, 240, 240, 0.1);
+            border: 1px solid rgba(240, 240, 240, 0.2);
+            color: var(--text-color);
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .newsletter-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .newsletter-submit {
+            padding: 0 18px;
+            background-color: var(--primary-color);
+            border: none;
+            color: var(--secondary-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-submit:hover {
+            background-color: var(--text-color);
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 35px;
+            border-top: 1px solid rgba(240, 240, 240, 0.1);
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            margin-bottom: 18px;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-marquee {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .footer-marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(42, 42, 42, 0.98);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .mobile-nav a {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .mobile-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .mobile-nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .mobile-nav a:hover::after {
+            width: 100%;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.8rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-menu:hover {
+            color: var(--primary-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1440px) {
+            .model-name {
+                font-size: 3.2rem;
+            }
+            
+            .spec-value {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+
+            .model-info-3d {
+                width: 50%;
+                padding: 40px;
+            }
+            
+            .model-name {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .menu-btn {
+                display: block;
+            }
+            
+            .main-nav {
+                display: none;
+            }
+            
+            .hero-content {
+                left: 5%;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-right: 20px;
+            }
+            
+            .history-timeline::before {
+                left: 20px;
+            }
+
+            .model-3d-container {
+                flex-direction: column;
+            }
+            
+            .model-3d-view {
+                height: 60%;
+            }
+            
+            .model-info-3d {
+                width: 100%;
+                height: 40%;
+                padding: 30px;
+            }
+            
+            .model-name {
+                font-size: 3rem;
+            }
+            
+            .model-specs-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .model-carousel-3d {
+                height: auto;
+                min-height: 800px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-content {
+                left: 20px;
+                right: 20px;
+                bottom: 20%;
+            }
+            
+            .model-showcase, .technology-section, .configurator-section, .news-section, .history-section {
+                padding: 70px 0;
+            }
+            
+            .model-carousel {
+                height: 65vh;
+                min-height: 550px;
+            }
+            
+            .model-name {
+                font-size: 2.5rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .model-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .model-nav {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .model-nav-btn {
+                font-size: 1.5rem;
+                white-space: nowrap;
+            }
+            
+            .model-name {
+                font-size: 2.5rem;
+            }
+            
+            .model-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .thumbnail-container {
+                gap: 10px;
+            }
+            
+            .model-thumbnail {
+                width: 80px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-text {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 8px 20px;
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .model-carousel {
+                height: 55vh;
+                min-height: 450px;
+            }
+            
+            .model-info-overlay {
+                padding: 25px;
+            }
+            
+            .model-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .model-nav, .news-nav {
+                display: none;
+            }
+
+            .model-info-3d {
+                padding: 20px;
+            }
+            
+            .model-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .model-name {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="SeventhGear Logo" class="logo-img">
+                <span class="logo-text">SEVENTHGEAR</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#models">Modelos</a></li>
+                    <li><a href="#technology">Tecnologia</a></li>
+                    <li><a href="#history">História</a></li>
+                    <li><a href="#news">Notícias</a></li>
+                    <li><a href="#configurator">Configurador</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="menu-btn" id="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <br>
+    <section class="hero">
+        <video autoplay muted loop class="hero-video">
+            <source src="video.mp4" type="video/mp4">
+            Seu navegador não suporta o elemento de vídeo.
+        </video>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Além do Desempenho</h1>
+            <p class="hero-text">A SeventhGear redefine a excelência automotiva com tecnologia de ponta e design inabalável. Experimente o ápice da engenharia em nossa coleção exclusiva.</p>
+            <a href="#models" class="btn">Explorar Modelos</a>
+        </div>
+    </section>
+   
+    <div class="footer-marquee">
+        <span>SEVENTHGEAR - O FUTURO DA EXCELÊNCIA AUTOMOTIVA • SEVENTHGEAR - O FUTURO DA EXCELÊNCIA AUTOMOTIVA • SEVENTHGEAR - O FUTURO DA EXCELÊNCIA AUTOMOTIVA •</span>
+    </div>
+
+    <!-- Model Showcase -->
+    <section class="model-showcase" id="models">
+        <div class="container">
+            <div class="model-header">
+                <h2 class="section-title">Nossa Coleção</h2>
+                <nav class="model-nav">
+                    <button class="model-nav-btn active" data-target="hyperion">Hyperion</button>
+                    <button class="model-nav-btn" data-target="aether">Aether</button>
+                    <button class="model-nav-btn" data-target="helios">Helios</button>
+                    <button class="model-nav-btn" data-target="nyx">Nyx</button>
+                </nav>
+            </div>
+            
+            <div class="model-carousel-3d">
+                <!-- Hyperion -->
+                <div class="model-slide-3d active" id="hyperion">
+                    <div class="model-3d-container">
+                        <div class="model-3d-view">
+                            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Hyperion" class="model-3d-image">
+                        </div>
+                        <div class="model-info-3d">
+                            <div class="model-info-content">
+                                <h3 class="model-name">Hyperion</h3>
+                                <div class="model-tagline">O ápice da engenharia automotiva</div>
+                                <p class="model-description">Com seu motor V12 biturbo de 1.200 HP, o Hyperion redefine o conceito de supercarro, alcançando 400 km/h com uma aceleração de 0-100 km/h em apenas 2.1 segundos.</p>
+                                <div class="model-specs-grid">
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.200 HP</span>
+                                            <span class="spec-label">Potência Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-bolt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">2.1s</span>
+                                            <span class="spec-label">0-100 km/h</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-gauge-high"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">400 km/h</span>
+                                            <span class="spec-label">Velocidade Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-weight-hanging"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.450 kg</span>
+                                            <span class="spec-label">Peso</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="model-actions">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aether -->
+                <div class="model-slide-3d" id="aether">
+                    <div class="model-3d-container">
+                        <div class="model-3d-view">
+                            <img src="https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Aether" class="model-3d-image">
+                        </div>
+                        <div class="model-info-3d">
+                            <div class="model-info-content">
+                                <h3 class="model-name">Aether</h3>
+                                <div class="model-tagline">Performance e elegância em harmonia</div>
+                                <p class="model-description">O Aether combina luxo e desempenho com seu motor V8 híbrido de 850 HP, oferecendo uma experiência de condução incomparável com tecnologia de ponta.</p>
+                                <div class="model-specs-grid">
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">850 HP</span>
+                                            <span class="spec-label">Potência Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-bolt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">2.8s</span>
+                                            <span class="spec-label">0-100 km/h</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-gauge-high"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">350 km/h</span>
+                                            <span class="spec-label">Velocidade Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-weight-hanging"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.580 kg</span>
+                                            <span class="spec-label">Peso</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="model-actions">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Helios -->
+                <div class="model-slide-3d" id="helios">
+                    <div class="model-3d-container">
+                        <div class="model-3d-view">
+                            <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Helios" class="model-3d-image">
+                        </div>
+                        <div class="model-info-3d">
+                            <div class="model-info-content">
+                                <h3 class="model-name">Helios</h3>
+                                <div class="model-tagline">O esportivo do amanhã, hoje</div>
+                                <p class="model-description">Com design agressivo e motor V10 aspirado de 720 HP, o Helios oferece uma experiência de condução pura e emocionante para os verdadeiros entusiastas.</p>
+                                <div class="model-specs-grid">
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">720 HP</span>
+                                            <span class="spec-label">Potência Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-bolt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">3.2s</span>
+                                            <span class="spec-label">0-100 km/h</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-gauge-high"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">330 km/h</span>
+                                            <span class="spec-label">Velocidade Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-weight-hanging"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.520 kg</span>
+                                            <span class="spec-label">Peso</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="model-actions">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Nyx -->
+                <div class="model-slide-3d" id="nyx">
+                    <div class="model-3d-container">
+                        <div class="model-3d-view">
+                            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1283&q=80" alt="Nyx" class="model-3d-image">
+                        </div>
+                        <div class="model-info-3d">
+                            <div class="model-info-content">
+                                <h3 class="model-name">Nyx</h3>
+                                <div class="model-tagline">O futuro da mobilidade elétrica</div>
+                                <p class="model-description">O primeiro hypercar totalmente elétrico da SeventhGear, com 1.500 HP e autonomia de 600 km, combinando desempenho brutal com sustentabilidade.</p>
+                                <div class="model-specs-grid">
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.500 HP</span>
+                                            <span class="spec-label">Potência Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-bolt"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">1.9s</span>
+                                            <span class="spec-label">0-100 km/h</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-gauge-high"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">420 km/h</span>
+                                            <span class="spec-label">Velocidade Máxima</span>
+                                        </div>
+                                    </div>
+                                    <div class="spec-item">
+                                        <div class="spec-icon"><i class="fas fa-battery-full"></i></div>
+                                        <div class="spec-details">
+                                            <span class="spec-value">600 km</span>
+                                            <span class="spec-label">Autonomia</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="model-actions">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Miniaturas dos Modelos -->
+            <div class="model-thumbnails">
+                <div class="thumbnail-container">
+                    <div class="model-thumbnail active" data-target="hyperion">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Hyperion">
+                        <span class="thumbnail-name">Hyperion</span>
+                    </div>
+                    <div class="model-thumbnail" data-target="aether">
+                        <img src="https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Aether">
+                        <span class="thumbnail-name">Aether</span>
+                    </div>
+                    <div class="model-thumbnail" data-target="helios">
+                        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Helios">
+                        <span class="thumbnail-name">Helios</span>
+                    </div>
+                    <div class="model-thumbnail" data-target="nyx">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1283&q=80" alt="Nyx">
+                        <span class="thumbnail-name">Nyx</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="technology-section" id="technology">
+        <div class="container">
+            <h2 class="section-title">Inovação</h2>
+            <p class="section-subtitle">Tecnologias de ponta que definem a experiência SeventhGear</p>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3 class="tech-title">Sistema Quantum Drive</h3>
+                    <p class="tech-description">Nosso exclusivo sistema de propulsão híbrido-elétrico oferece torque instantâneo e eficiência incomparável com transição perfeita entre fontes de energia.</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <h3 class="tech-title">Arquitetura Aerodinâmica</h3>
+                    <p class="tech-description">Superfícies projetadas computacionalmente otimizam o fluxo de ar para máximo downforce com arrasto mínimo, alcançando equilíbrio perfeito em todas as velocidades.</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="tech-title">Interface Neural</h3>
+                    <p class="tech-description">Sistemas de direção assistida por IA aprendem e se adaptam ao seu estilo de direção para desempenho ideal, criando uma experiência verdadeiramente personalizada.</p>
+                </div>
+                
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <h3 class="tech-title">Matriz de Carbono</h3>
+                    <p class="tech-description">Construção em fibra de carbono de próxima geração para rigidez excepcional e desempenho leve com um design monocoque único.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configurator Section -->
+    <section class="configurator-section" id="configurator">
+        <div class="configurator-bg"></div>
+        <div class="container">
+            <div class="configurator-content">
+                <h2 class="configurator-title">Crie Sua Obra-Prima</h2>
+                <p class="configurator-subtitle">Projete seu SeventhGear perfeito com nosso configurador exclusivo. Escolha entre infinitas opções de personalização para construir um veículo único.</p>
+                <a href="./carros.html" class="btn btn-solid">Iniciar Configurador</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section" id="news">
+        <div class="container">
+            <div class="news-header">
+                <h2 class="section-title">Notícias & Eventos</h2>
+                <nav class="news-nav">
+                    <button class="news-nav-btn active" data-category="all">Todas</button>
+                    <button class="news-nav-btn" data-category="events">Eventos</button>
+                    <button class="news-nav-btn" data-category="races">Corridas</button>
+                </nav>
+            </div>
+            
+            <div class="news-grid">
+                <!-- Notícia 1 - Evento -->
+                <div class="news-card" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Salão do Automóvel" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">15 Junho, 2024</div>
+                        <h3 class="news-title">SeventhGear no Salão do Automóvel</h3>
+                        <p class="news-excerpt">A marca impressiona com seu estande futurista e lançamentos exclusivos no principal evento automotivo do ano.</p>
+                        <a href="#" class="read-more" data-news="1">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Notícia 2 - Corrida -->
+                <div class="news-card" data-category="races">
+                    <img src="https://blog.autoglassonline.com.br/wp-content/uploads/2024/11/carro-importado-de-luxo.jpg" alt="Corrida de Resistência" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">28 Maio, 2025</div>
+                        <h3 class="news-title">Vitória na Corrida de Resistência</h3>
+                        <p class="news-excerpt">A equipe SeventhGear domina as 24 horas de Le Mans com desempenho impecável do novo Hyperion GT3.</p>
+                        <a href="#" class="read-more" data-news="2">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Notícia 3 - Evento -->
+                <div class="news-card" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1283&q=80" alt="Lançamento do Nyx" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">10 Abril, 2025</div>
+                        <h3 class="news-title">Lançamento do Nyx</h3>
+                        <p class="news-excerpt">Revolução elétrica: SeventhGear apresenta seu primeiro hypercar 100% elétrico com desempenho recorde.</p>
+                        <a href="#" class="read-more" data-news="3">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Notícia 4 - Corrida -->
+                <div class="news-card" data-category="races">
+                    <img src="https://automotivoshopping.com.br/wp-content/uploads/2022/03/foto05emp-201-sf90-b10-768x440.webp" alt="Temporada de Corridas" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">22 Março, 2024</div>
+                        <h3 class="news-title">Temporada de Corridas 2023</h3>
+                        <p class="news-excerpt">Calendário ambicioso coloca SeventhGear nos principais circuitos mundiais com tecnologia inovadora.</p>
+                        <a href="#" class="read-more" data-news="4">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Notícia 5 - Evento -->
+                <div class="news-card" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Exposição de Tecnologia" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">05 Fevereiro, 2025</div>
+                        <h3 class="news-title">Exposição de Tecnologia</h3>
+                        <p class="news-excerpt">Inovações SeventhGear roubam a cena na principal feira de tecnologia automotiva mundial.</p>
+                        <a href="#" class="read-more" data-news="5">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Notícia 6 - Corrida -->
+                <div class="news-card" data-category="races">
+                    <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Treino Oficial" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">15 Janeiro, 2025</div>
+                        <h3 class="news-title">Treino Oficial</h3>
+                        <p class="news-excerpt">Equipe SeventhGear inicia preparação para temporada com testes em circuito exclusivo.</p>
+                        <a href="#" class="read-more" data-news="6">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Notícia 7 - Evento -->
+                <div class="news-card" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Novo Showroom" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">10 Dezembro, 2024</div>
+                        <h3 class="news-title">Showroom em Dubai</h3>
+                        <p class="news-excerpt">Espaço luxuoso redefine experiência do cliente com tecnologia imersiva e design arrojado.</p>
+                        <a href="#" class="read-more" data-news="7">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Notícia 8 - Corrida -->
+                <div class="news-card" data-category="races">
+                    <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1425&q=80" alt="Campeonato Mundial" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">25 Novembro, 2024</div>
+                        <h3 class="news-title">Campeonato Mundial</h3>
+                        <p class="news-excerpt">Título histórico consolida SeventhGear como força dominante no automobilismo mundial.</p>
+                        <a href="#" class="read-more" data-news="8">Explorar <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Notícias Premium -->
+    <div class="news-modal" id="news-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <div class="modal-image-container">
+                <img src="" alt="" class="modal-image" id="modal-image">
+            </div>
+            <div class="modal-text-content">
+                <div class="modal-date" id="modal-date"></div>
+                <h3 class="modal-title" id="modal-title"></h3>
+                <div class="modal-fulltext" id="modal-fulltext"></div>
+                <div class="modal-footer">
+                    <div class="modal-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fas fa-link"></i></a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- History Section -->
+    <section class="history-section" id="history">
+        <div class="container">
+            <h2 class="section-title">Nossa História</h2>
+            <p class="section-subtitle">De começos visionários à excelência automotiva</p>
+            
+            <div class="history-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2005</div>
+                        <h3 class="timeline-title">Fundação</h3>
+                        <p class="timeline-desc">A SeventhGear é fundada em Munique, Alemanha, com uma equipe de 12 engenheiros e designers dedicados a expandir os limites automotivos.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2012</div>
+                        <h3 class="timeline-title">Primeiro Supercarro</h3>
+                        <p class="timeline-desc">O protótipo Hyperion é revelado, estabelecendo novos padrões de desempenho e design no mundo automotivo.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2016</div>
+                        <h3 class="timeline-title">Expansão Global</h3>
+                        <p class="timeline-desc">A SeventhGear abre showrooms em Nova York, Dubai e Tóquio, estabelecendo presença mundial.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <h3 class="timeline-title">Revolução Elétrica</h3>
+                        <p class="timeline-desc">Lançamento do nosso primeiro hypercar totalmente elétrico, o Nyx E-R, com desempenho e autonomia recordes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">SEVENTHGEAR</h3>
+                    <p class="footer-description">Redefinindo a excelência automotiva através de tecnologia de ponta e design inabalável.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/7gea.r?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3>Modelos</h3>
+                    <div class="footer-links">
+                        <a href="#">Hyperion</a>
+                        <a href="#">Aether</a>
+                        <a href="#">Helios</a>
+                        <a href="#">Nyx</a>
+                        <a href="#">Concept X</a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3>Empresa</h3>
+                    <div class="footer-links">
+                        <a href="#">Sobre Nós</a>
+                        <a href="#">História</a>
+                        <a href="#">Tecnologia</a>
+                        <a href="#">Carreiras</a>
+                        <a href="#">Imprensa</a>
+                    </div>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h3>Fique Conectado</h3>
+                    <p>Assine nossa newsletter para as últimas atualizações e conteúdo exclusivo.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Seu Email">
+                        <button type="submit" class="newsletter-submit">Assinar</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2023 SEVENTHGEAR. Todos os Direitos Reservados.</p>
+                <div class="footer-legal">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Política de Cookies</a>
+                    <a href="#">Contato</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+   
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#models">Modelos</a></li>
+                <li><a href="#technology">Tecnologia</a></li>
+                <li><a href="#history">História</a></li>
+                <li><a href="#news">Notícias</a></li>
+                <li><a href="#configurator">Configurador</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+        <button class="close-menu" id="close-menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+      <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+         new window.VLibras.Widget('https://vlibras.gov.br/app');
+        // Header Scroll Effect
+        const header = document.getElementById('main-header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenu = document.getElementById('close-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Model Carousel Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Seleciona todos os elementos de controle
+            const navButtons = document.querySelectorAll('.model-nav-btn');
+            const thumbnails = document.querySelectorAll('.model-thumbnail');
+            const modelSlides = document.querySelectorAll('.model-slide-3d');
+            
+            // Função para ativar um slide específico
+            function activateModel(targetId) {
+                // Remove a classe 'active' de todos os slides, botões e miniaturas
+                modelSlides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                thumbnails.forEach(thumb => {
+                    thumb.classList.remove('active');
+                });
+                
+                // Adiciona a classe 'active' aos elementos do modelo selecionado
+                const targetSlide = document.getElementById(targetId);
+                if (targetSlide) targetSlide.classList.add('active');
+                
+                // Ativa o botão de navegação correspondente
+                document.querySelectorAll(`.model-nav-btn[data-target="${targetId}"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                // Ativa a miniatura correspondente
+                document.querySelectorAll(`.model-thumbnail[data-target="${targetId}"]`).forEach(thumb => {
+                    thumb.classList.add('active');
+                });
+            }
+            
+            // Adiciona event listeners aos botões de navegação
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    activateModel(targetId);
+                });
+            });
+            
+            // Adiciona event listeners às miniaturas
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    activateModel(targetId);
+                });
+            });
+            
+            // Inicializa com o primeiro modelo ativo
+            activateModel('hyperion');
+            
+            // Navegação automática (carrossel)
+            let currentIndex = 0;
+            const models = ['hyperion', 'aether', 'helios', 'nyx'];
+            
+            function nextModel() {
+                currentIndex = (currentIndex + 1) % models.length;
+                activateModel(models[currentIndex]);
+            }
+            
+            // Ativa navegação automática a cada 5 segundos
+            setInterval(nextModel, 5000);
+        });
+
+        // News Carousel
+        const newsNavBtns = document.querySelectorAll('.news-nav-btn');
+        
+        newsNavBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                newsNavBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Aqui você implementaria a filtragem das notícias
+            });
+        });
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Fecha o menu mobile se estiver aberto
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Scroll Animation
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.section-title, .section-subtitle, .model-card, .tech-card, .news-card, .timeline-content');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+
+        // Video Fallback
+        const heroVideo = document.querySelector('.hero-video');
+        if (heroVideo) {
+            heroVideo.addEventListener('error', function() {
+                this.parentNode.innerHTML = `
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <h1 class="hero-title">Além do Desempenho</h1>
+                        <p class="hero-text">A SeventhGear redefine a excelência automotiva com tecnologia de ponta e design inabalável.</p>
+                        <a href="#models" class="btn">Explorar Modelos</a>
+                    </div>
+                `;
+            });
+        }
+            // News Filter Functionality
+            document.addEventListener('DOMContentLoaded', function() {
+            const newsNavBtns = document.querySelectorAll('.news-nav-btn');
+            const newsCards = document.querySelectorAll('.news-card');
+            
+            newsNavBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    newsNavBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // Filter news cards
+                    newsCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+                        
+                        if (category === 'all' || cardCategory === category) {
+                            card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        });
+
+        // News Modal Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const newsModal = document.getElementById('news-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalDate = document.getElementById('modal-date');
+            const modalTitle = document.getElementById('modal-title');
+            const modalFulltext = document.getElementById('modal-fulltext');
+            const readMoreLinks = document.querySelectorAll('.read-more');
+            
+            // Dados completos das notícias
+            const newsData = {
+                1: {
+                    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==&auto=format&fit=crop&w=1470&q=80",
+                    date: "15 Junho, 2024",
+                    title: "SeventhGear no Salão do Automóvel",
+                    fulltext: `<p>A SeventhGear marcou presença no prestigiado Salão Internacional do Automóvel, apresentando seus últimos modelos e tecnologias inovadoras. O evento, que reuniu os principais nomes da indústria automotiva, foi palco para o lançamento mundial do novo sistema de propulsão híbrida da marca.</p>
+                              <p>Visitantes puderam conferir de perto os modelos Hyperion, Aether e Helios, além de uma prévia exclusiva do conceito Nyx, o primeiro hypercar totalmente elétrico da SeventhGear. "Estamos mostrando ao mundo o futuro da mobilidade de alto desempenho", afirmou o CEO da empresa durante a abertura do evento.</p>
+                              <p>O estande da SeventhGear foi um dos mais visitados do salão, atraindo tanto entusiastas quanto especialistas do setor. A próxima parada da exposição será em Dubai, em agosto deste ano.</p>`
+                },
+                2: {
+                    image: "https://blog.autoglassonline.com.br/wp-content/uploads/2024/11/carro-importado-de-luxo.jpg",
+                    date: "28 Maio, 2025",
+                    title: "Vitória na Corrida de Resistência",
+                    fulltext: `<p>A equipe SeventhGear Racing conquistou sua primeira vitória na lendária corrida de 24 horas de Le Mans com o novo Hyperion GT3. A dupla de pilotos completou 385 voltas no circuito francês, superando os principais concorrentes em uma prova marcada por condições climáticas desafiadoras.</p>
+                              <p>"Esta vitória é um marco para nossa equipe e prova a confiabilidade e desempenho de nossos carros em condições extremas", declarou o chefe da equipe após a bandeirada final. O Hyperion GT3 mostrou excelente consumo de combustível e desempenho consistente durante toda a prova.</p>
+                              <p>A próxima etapa do campeonato será em Silverstone, onde a equipe buscará ampliar sua liderança no campeonato. Os fãs podem esperar novidades aerodinâmicas que serão testadas no carro para a próxima corrida.</p>`
+                },
+                3: {
+                    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1283&q=80",
+                    date: "10 Abril, 2025",
+                    title: "Lançamento do Novo Modelo Nyx",
+                    fulltext: `<p>A SeventhGear revelou o Nyx, seu primeiro hypercar totalmente elétrico, em um evento exclusivo em Munique. Com design futurista e desempenho impressionante, o Nyx promete redefinir os padrões dos carros elétricos de alto desempenho.</p>
+                              <p>O modelo possui um sistema de tração integral com quatro motores independentes, gerando incríveis 1.500 HP e torque instantâneo. A bateria de última geração oferece autonomia de 600 km e pode ser recarregada em apenas 15 minutos com os novos carregadores ultrarrápidos da SeventhGear.</p>
+                              <p>"O Nyx representa o futuro da nossa marca - desempenho bruto combinado com sustentabilidade", explicou o diretor de design. As primeiras unidades serão entregues no final deste ano, com produção limitada a apenas 100 exemplares.</p>`
+                },
+                4: {
+                    image: "https://automotivoshopping.com.br/wp-content/uploads/2022/03/foto05emp-201-sf90-b10-768x440.webp",
+                    date: "22 Março, 2024",
+                    title: "Início da Temporada de Corridas 2023",
+                    fulltext: `<p>A SeventhGear Racing divulgou o calendário completo para a temporada 2023 do Campeonato Mundial de Endurance. A equipe competirá em 8 etapas ao redor do mundo, começando por Sebring em abril e terminando em Bahrain em novembro.</p>
+                              <p>Para esta temporada, a equipe contará com dois carros oficialmente inscritos na categoria principal, pilotados por uma formação renovada que combina experiência e jovens talentos. "Temos grandes expectativas para este ano após os testes positivos realizados no inverno", afirmou o diretor esportivo.</p>
+                              <p>Os fãs poderão acompanhar todas as corridas através do serviço de streaming exclusivo no site da SeventhGear, que incluirá câmeras onboard, telemetria em tempo real e entrevistas exclusivas com a equipe.</p>`
+                },
+                5: {
+                    image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    date: "05 Fevereiro, 2025",
+                    title: "Exposição de Tecnologia Automotiva",
+                    fulltext: `<p>A SeventhGear apresentou seus mais recentes avanços tecnológicos na Feira Internacional de Inovação Automotiva em Tóquio. O destaque foi o novo sistema de inteligência artificial para assistência ao condutor, que aprende com os hábitos do motorista para oferecer uma experiência personalizada.</p>
+                              <p>Outra novidade apresentada foi o material composto revolucionário usado na estrutura dos carros, que é 30% mais leve e 50% mais resistente que os materiais convencionais. "Estamos trazendo para a produção em massa tecnologias que antes eram restritas aos nossos carros de competição", explicou o CTO da empresa.</p>
+                              <p>A feira também marcou o anúncio de uma nova parceria com uma empresa de baterias para desenvolver sistemas de armazenamento de energia mais eficientes para os próximos modelos elétricos da marca.</p>`
+                },
+                6: {
+                    image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    date: "15 Janeiro, 2025",
+                    title: "Treino Oficial da Equipe SeventhGear",
+                    fulltext: `<p>A equipe SeventhGear Racing iniciou seus testes oficiais de pré-temporada no circuito de Barcelona. Durante uma semana intensiva, os pilotos avaliaram as novas configurações aerodinâmicas e sistemas mecânicos desenvolvidos para a temporada 2023.</p>
+                              <p>"Os resultados dos testes superaram nossas expectativas", comemorou o engenheiro-chefe. "Conseguimos melhorar significativamente o desempenho nas curvas lentas sem comprometer a velocidade máxima, que era nosso principal objetivo para este ano."</p>
+                              <p>Os treinos contaram também com a presença de pilotos de desenvolvimento, que testaram novas tecnologias que podem ser incorporadas aos modelos de rua da marca no futuro. A próxima sessão de testes será realizada no circuito de Silverstone no final do mês.</p>`
+                },
+                7: {
+                    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    date: "10 Dezembro, 2024",
+                    title: "Inauguração do Novo Showroom em Dubai",
+                    fulltext: `<p>A SeventhGear inaugurou seu mais novo e luxuoso showroom no coração de Dubai, marcando sua expansão no mercado do Oriente Médio. O espaço de 3.000m² apresenta todos os modelos da marca em um ambiente que combina tecnologia e luxo.</p>
+                              <p>"Dubai é um mercado estratégico para nós, onde encontramos clientes que apreciam a combinação perfeita entre desempenho e exclusividade que oferecemos", disse o diretor de vendas globais durante a cerimônia de abertura.</p>
+                              <p>O showroom conta com um simulador de realidade virtual que permite aos clientes experimentar os carros em pistas famosas ao redor do mundo, além de uma área VIP para configuração personalizada dos veículos. Este é o primeiro de cinco novos showrooms que a marca planeja abrir na região até o final de 2023.</p>`
+                },
+                8: {
+                    image: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1425&q=80",
+                    date: "25 Novembro, 2024",
+                    title: "SeventhGear Vence Campeonato Mundial",
+                    fulltext: `<p>Em uma temporada marcada por performances impressionantes, a equipe SeventhGear Racing conquistou seu primeiro título mundial no Campeonato de Endurance. A vitória foi consolidada na última corrida do ano em Bahrain, onde a equipe terminou em segundo lugar, suficiente para garantir o título.</p>
+                              <p>"Este é um momento histórico para nossa equipe e para a marca SeventhGear", declarou o piloto campeão. "Trabalhamos incansavelmente durante todo o ano e cada membro da equipe merece este título."</p>
+                              <p>O carro #7 da SeventhGear mostrou impressionante confiabilidade durante toda a temporada, terminando todas as corridas no top 5. As vitórias em Le Mans e Spa foram os pontos altos da campanha. Para a próxima temporada, a equipe promete ainda mais inovações tecnológicas derivadas do programa de corridas.</p>`
+                }
+            };
+
+            // Abrir modal quando clicar em "Ler Mais"
+            readMoreLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const newsId = this.getAttribute('data-news');
+                    const news = newsData[newsId];
+                    
+                    modalImage.src = news.image;
+                    modalImage.alt = news.title;
+                    modalDate.textContent = news.date;
+                    modalTitle.textContent = news.title;
+                    modalFulltext.innerHTML = news.fulltext;
+                    
+                    newsModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            // Fechar modal
+            closeModalBtn.addEventListener('click', function() {
+                newsModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Fechar modal ao clicar fora do conteúdo
+            newsModal.addEventListener('click', function(e) {
+                if (e.target === newsModal) {
+                    newsModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

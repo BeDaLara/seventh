@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador SEVENTHGEAR</title>
+    <link rel="icon" href="seventh.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ffffff; /* Branco */
+            --secondary-color: #000000; /* Preto */
+            --accent-color: #c0c0c0; /* Prata */
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333333;
+            --text-color: #333333;
+            --text-light: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow: hidden;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            overflow-x: hidden;
+            height: 100vh;
+            position: fixed;
+            width: 100%;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Teko', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Configurator Styles */
+        .configurator-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .configurator-sidebar {
+            width: 380px;
+            background-color: var(--primary-color);
+            padding: 40px 30px;
+            border-right: 1px solid var(--medium-gray);
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .configurator-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: var(--light-gray);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .car-display-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, var(--light-gray) 0%, var(--medium-gray) 100%);
+            height: calc(100vh - 200px);
+        }
+
+        .car-view {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 100%;
+        }
+
+        .exterior-view, .interior-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .interior-view {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .interior-view.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .car-image {
+            max-width: 90%;
+            max-height: 70vh;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        .interior-image {
+            max-width: 95%;
+            max-height: 85vh;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+
+        .car-view-controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 5;
+        }
+
+        .interior-view .car-view-controls {
+            display: none !important;
+        }
+
+        .angle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--medium-gray);
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Teko', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .angle-btn:hover, .angle-btn.active {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .color-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .color-gallery.hidden {
+            display: none;
+        }
+
+        .gallery-item {
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-align: center;
+            position: relative;
+            background-color: var(--primary-color);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .gallery-item:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item.active {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .option-category {
+            margin-bottom: 40px;
+        }
+
+        .option-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .option-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .option-items {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .option-item {
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .option-item:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+        }
+
+        .option-item.active {
+            border-color: var(--secondary-color);
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .option-item.active::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .option-label {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .color-option.active {
+            border-color: var(--secondary-color);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .color-option.active::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .color-sample {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .interior-option {
+            width: 120px;
+            height: 100px;
+            border: 1px solid var(--medium-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .interior-option:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .interior-option.active {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .interior-option.active::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 25px;
+            height: 25px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            border: 2px solid var(--primary-color);
+        }
+
+        .interior-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .selection-highlight {
+            position: fixed;
+            bottom: 200px;
+            right: 30px;
+            background-color: var(--primary-color);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--medium-gray);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .selection-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .selection-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--medium-gray);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        .selection-interior {
+            width: 50px;
+            height: 40px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        /* Summary Container Styles */
+        .summary-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .summary-toggle:hover {
+            transform: scale(1.1);
+            background-color: var(--dark-gray);
+        }
+
+        .summary-toggle i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .summary-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            padding: 25px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            width: 350px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(calc(100% + 20px));
+            transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .summary-container.visible {
+            transform: translateY(0);
+        }
+
+        .summary-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .summary-close {
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            color: var(--dark-gray);
+        }
+
+        .summary-close:hover {
+            color: var(--secondary-color);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--medium-gray);
+        }
+
+        .summary-item-name {
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .summary-item-value {
+            font-weight: 600;
+            text-align: right;
+            max-width: 180px;
+            color: var(--secondary-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .summary-total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--medium-gray);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-gray);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Configuration Saved Page */
+        .saved-config-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--light-gray);
+            z-index: 1000;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .saved-config-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--primary-color);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .saved-config-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        .saved-config-preview {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .saved-config-car {
+            flex: 1;
+            text-align: center;
+        }
+
+        .saved-config-car-image {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .saved-config-interior {
+            flex: 1;
+            text-align: center;
+        }
+
+        .saved-config-interior-image {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .saved-config-details {
+            margin-bottom: 40px;
+        }
+
+        .saved-config-details h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .saved-config-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--medium-gray);
+        }
+
+        .saved-config-item-name {
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .saved-config-item-value {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        .saved-config-total {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .saved-config-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--primary-color);
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .modal-text {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .modal-btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--secondary-color);
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            display: none;
+        }
+
+        .contact-form.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .form-notice {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: #f44336;
+            margin-left: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-submit {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #4caf50;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .success-text {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .configurator-sidebar {
+                width: 350px;
+            }
+            
+            .color-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .selection-highlight {
+                bottom: 180px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .configurator-container {
+                flex-direction: column;
+                padding-top: 0;
+            }
+            
+            .configurator-sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 400px;
+                border-right: none;
+                border-bottom: 1px solid var(--medium-gray);
+            }
+            
+            .car-display-container {
+                height: 50vh;
+            }
+            
+            .summary-container {
+                width: 300px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .summary-toggle {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .selection-highlight {
+                bottom: 160px;
+                right: 20px;
+                flex-direction: row;
+                padding: 10px;
+            }
+
+            .saved-config-preview {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .color-option {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .interior-option {
+                width: 80px;
+                height: 60px;
+            }
+            
+            .summary-container {
+                width: 250px;
+                padding: 15px;
+            }
+            
+            .color-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .selection-highlight {
+                bottom: 140px;
+                right: 10px;
+                font-size: 0.8rem;
+            }
+
+            .saved-config-content {
+                padding: 20px;
+            }
+
+            .saved-config-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .configurator-sidebar {
+                padding: 20px 15px;
+            }
+            
+            .option-title {
+                font-size: 1.5rem;
+            }
+            
+            .color-option {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .summary-container {
+                width: 90%;
+                left: 5%;
+                right: auto;
+            }
+            
+            .summary-toggle {
+                left: 5%;
+                right: auto;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .selection-highlight {
+                display: none;
+            }
+
+            .saved-config-container {
+                padding: 20px 10px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Configuration Saved Page -->
+    <div class="saved-config-container" id="saved-config-container">
+        <div class="saved-config-content">
+            <h2 class="saved-config-title">SUA CONFIGURAÇÃO FOI SALVA</h2>
+            
+            <div class="saved-config-preview">
+                <div class="saved-config-car">
+                    <img id="saved-car-image" class="saved-config-car-image">
+                    <h3 id="saved-car-color"></h3>
+                </div>
+                <div class="saved-config-interior">
+                    <img id="saved-interior-image" class="saved-config-interior-image">
+                    <h3 id="saved-interior-name"></h3>
+                </div>
+            </div>
+            
+            <div class="saved-config-details">
+                <h3>DETALHES DA CONFIGURAÇÃO</h3>
+                <div class="saved-config-item">
+                    <span class="saved-config-item-name">Modelo:</span>
+                    <span class="saved-config-item-value" id="saved-model-name"></span>
+                </div>
+                <div class="saved-config-item">
+                    <span class="saved-config-item-name">Cor:</span>
+                    <span class="saved-config-item-value" id="saved-color-name"></span>
+                </div>
+                <div class="saved-config-item">
+                    <span class="saved-config-item-name">Interior:</span>
+                    <span class="saved-config-item-value" id="saved-interior-type"></span>
+                </div>
+                <div class="saved-config-total">
+                    <span>Preço Total: </span>
+                    <span id="saved-total-price"></span>
+                </div>
+            </div>
+            
+            <div class="saved-config-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='./carros.html'">VOLTAR</button>
+                <button class="btn" onclick="showContactModal()">CONTATAR UM REVENDEDOR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-content">
+            <div id="contact-confirmation">
+                <h3 class="modal-title">Enviar solicitação de contato</h3>
+                <p class="modal-text">Você quer ser contatado pela SeventhGear para agendar uma visita com uma concessionária ou obter informações comerciais adicionais?</p>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="hideContactModal()">Cancelar</button>
+                    <button class="modal-btn modal-btn-primary" onclick="showContactForm()">OK</button>
+                </div>
+            </div>
+            
+            <div class="contact-form" id="contact-form">
+                <h3 class="form-title">FORMULÁRIO DE CONSULTA</h3>
+                <div class="form-notice">
+                    Atenção que a solicitação será enviada ao revendedor e você será contatado novamente para a solicitação comercial enviada através deste formulário
+                </div>
+                
+                <form id="contact-form-data" onsubmit="submitContactForm(event)">
+                    <div class="form-group">
+                        <label class="form-label required">Para qual revendedor você deseja enviar sua solicitação?</label>
+                        <select class="form-select" required>
+                            <option value="">Selecione um revendedor</option>
+                            <option value="distribuidor-sp">Distribuidor São Paulo</option>
+                            <option value="distribuidor-rj">Distribuidor Rio de Janeiro</option>
+                            <option value="distribuidor-mg">Distribuidor Minas Gerais</option>
+                            <option value="distribuidor-pr">Distribuidor Paraná</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Você já é cliente da SeventhGear?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="existing-customer" value="sim" required> Sim
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="existing-customer" value="nao"> Não
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Primeiro nome</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Sobrenome</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Endereço</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Cidade</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Como você prefere ser contatado?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="contact-preference" value="email" required> E-mail
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="contact-preference" value="telefone"> Telefone
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">E-mail</label>
+                        <input type="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Telefone</label>
+                        <input type="tel" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="button" class="btn btn-secondary" onclick="hideContactForm()">CANCELAR</button>
+                        <button type="submit" class="btn">ENVIAR SOLICITAÇÃO</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="success-message" id="success-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 class="success-title">SOLICITAÇÃO ENVIADA COM SUCESSO!</h3>
+                <p class="success-text">Em breve você será contatado por um de nossos revendedores para agendar sua visita.</p>
+                <button class="btn" onclick="closeSuccessMessage()">VOLTAR PARA A PÁGINA INICIAL</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="configurator-container">
+        <!-- Sidebar with configuration options -->
+        <div class="configurator-sidebar">
+            <div class="option-category">
+                <h3 class="option-title">Modelo</h3>
+                <div class="option-items" id="model-options">
+                    <!-- Model options will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="option-category">
+                <h3 class="option-title">Cor Externa</h3>
+                <div class="option-items" id="color-options">
+                    <!-- Colors will be loaded dynamically based on model -->
+                </div>
+            </div>
+
+            <div class="option-category">
+                <h3 class="option-title">Interior</h3>
+                <div class="option-items" id="interior-options">
+                    <!-- Interior options will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content with car display -->
+        <div class="configurator-main">
+            <div class="car-display-container">
+                <div class="car-view">
+                    <!-- Visualização Exterior -->
+                    <div class="exterior-view active">
+                        <img id="car-image" src="h1vermelho.png" class="car-image">
+                        <!-- Controles de ângulo APENAS aqui -->
+                        <div class="car-view-controls">
+                            <button class="angle-btn active" onclick="changeAngle('h1')">1</button>
+                            <button class="angle-btn" onclick="changeAngle('h2')">2</button>
+                            <button class="angle-btn" onclick="changeAngle('h3')">3</button>
+                            <button class="angle-btn" onclick="changeAngle('h4')">4</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Visualização Interior -->
+                    <div class="interior-view">
+                        <img id="interior-image" src="interiorazul.png" class="interior-image">
+                        <!-- SEM controles aqui -->
+                    </div>
+                </div>
+
+                <!-- Color Gallery -->
+                <div class="color-gallery" id="color-gallery">
+                    <div class="gallery-item active" onclick="changeAngle('h1')">
+                        <img src="h1vermelho.png" class="gallery-image">
+                        <div class="option-label">Frontal</div>
+                    </div>
+                    <div class="gallery-item" onclick="changeAngle('h2')">
+                        <img src="h2vermelho.png" class="gallery-image">
+                        <div class="option-label">Lateral</div>
+                    </div>
+                    <div class="gallery-item" onclick="changeAngle('h3')">
+                        <img src="h3vermelho.png" class="gallery-image">
+                        <div class="option-label">Traseira</div>
+                    </div>
+                    <div class="gallery-item" onclick="changeAngle('h4')">
+                        <img src="h4vermelho.png" class="gallery-image">
+                        <div class="option-label">Superior</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selection Highlight -->
+            <div class="selection-highlight">
+                <div class="selection-item">
+                    <div class="selection-color" id="selected-color" style="background-color: #ff0000;"></div>
+                    <span id="selected-color-text">Vermelho</span>
+                </div>
+                <div class="selection-item">
+                    <img class="selection-interior" id="selected-interior" src="interiorazul.png">
+                    <span id="selected-interior-text">Interior Azul</span>
+                </div>
+            </div>
+
+            <!-- Summary Toggle Button -->
+            <div class="summary-toggle" id="summary-toggle" onclick="toggleSummary()">
+                <i class="fas fa-cog"></i>
+            </div>
+
+            <!-- Configuration Summary -->
+            <div class="summary-container" id="summary-container">
+                <h4 class="summary-title">SUA CONFIGURAÇÃO <span class="summary-close" onclick="toggleSummary()"><i class="fas fa-times"></i></span></h4>
+                <div class="summary-item">
+                    <span class="summary-item-name">Modelo:</span>
+                    <span class="summary-item-value" id="summary-model">Hyperion</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-name">Cor:</span>
+                    <span class="summary-item-value" id="summary-color">Vermelho</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-name">Interior:</span>
+                    <span class="summary-item-value" id="summary-interior">Interior Azul</span>
+                </div>
+                <div class="summary-item summary-total">
+                    <span class="summary-item-name">Preço Total:</span>
+                    <span class="summary-item-value" id="summary-total">R$ 1.500.000</span>
+                </div>
+                <button class="btn" onclick="saveConfiguration()">SALVAR CONFIGURAÇÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+      <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+
+        // Model definitions
+        const models = {
+            hyperion: {
+                name: 'Hyperion',
+                basePrice: 1500000,
+                colors: {
+                    vermelho: {
+                        name: 'Vermelho',
+                        price: 0,
+                        code: '#ff0000',
+                        images: {
+                            h1: 'h1vermelho.png',
+                            h2: 'h2vermelho.png',
+                            h3: 'h3vermelho.png',
+                            h4: 'h4vermelho.png'
+                        }
+                    },
+                    branco: {
+                        name: 'Branco',
+                        price: 0,
+                        code: '#ffffff',
+                        images: {
+                            h1: 'h1branco.png',
+                            h2: 'h2branco.png',
+                            h3: 'h3branco.png',
+                            h4: 'h4branco.png'
+                        }
+                    },
+                    marrom: {
+                        name: 'Marrom',
+                        price: 0,
+                        code: '#8B4513',
+                        images: {
+                            h1: 'h1marrom.png',
+                            h2: 'h2marrom.png',
+                            h3: 'h3marrom.png',
+                            h4: 'h4marrom.png'
+                        }
+                    }
+                },
+                interiors: {
+                    azul: {
+                        name: 'Interior Azul',
+                        price: 0,
+                        image: 'interiorazul.png'
+                    },
+                    vermelho: {
+                        name: 'Interior Vermelho',
+                        price: 0,
+                        image: 'interiorvermelho.png'
+                    },
+                    branco: {
+                        name: 'Interior Branco',
+                        price: 0,
+                        image: 'interiorbranco.png'
+                    }
+                }
+            },
+            babalu: {
+                name: 'Babalu',
+                basePrice: 1400000,
+                colors: {
+                    azul: {
+                        name: 'Azul',
+                        price: 0,
+                        code: '#1E90FF',
+                        images: {
+                            h1: 'b1azul.png',
+                            h2: 'b2azul.png',
+                            h3: 'b3azul.png',
+                            h4: 'b4azul.png'
+                        }
+                    },
+                    laranja: {
+                        name: 'Laranja',
+                        price: 0,
+                        code: '#FF8C00',
+                        images: {
+                            h1: 'b1laranja.png',
+                            h2: 'b2laranja.png',
+                            h3: 'b3laranja.png',
+                            h4: 'b4laranja.png'
+                        }
+                    }
+                },
+                interiors: {
+                    azul: {
+                        name: 'Interior Azul',
+                        price: 0,
+                        image: 'interiorazul.png'
+                    },
+                    vermelho: {
+                        name: 'Interior Vermelho',
+                        price: 0,
+                        image: 'interiorvermelho.png'
+                    },
+                    branco: {
+                        name: 'Interior Branco',
+                        price: 0,
+                        image: 'interiorbranco.png'
+                    }
+                }
+            },
+            rabboo: {
+                name: 'Rabboo',
+                basePrice: 1600000,
+                colors: {
+                    roxo: {
+                        name: 'Roxo',
+                        price: 0,
+                        code: '#800080',
+                        images: {
+                            h1: 't1roxo.png',
+                            h2: 't2roxo.png',
+                            h3: 't3roxo.png',
+                            h4: 't4roxo.png'
+                        }
+                    },
+                    preto: {
+                        name: 'Preto',
+                        price: 0,
+                        code: '#000000',
+                        images: {
+                            h1: 't1preto.png',
+                            h2: 't2preto.png',
+                            h3: 't3preto.png',
+                            h4: 't4preto.png'
+                        }
+                    },
+                    verde: {
+                        name: 'Verde',
+                        price: 0,
+                        code: '#008000',
+                        images: {
+                            h1: 't1verde.png',
+                            h2: 't2verde.png',
+                            h3: 't3verde.png',
+                            h4: 't4verde.png'
+                        }
+                    }
+                },
+                interiors: {
+                    azul: {
+                        name: 'Interior Azul',
+                        price: 0,
+                        image: 'interiorazul.png'
+                    },
+                    vermelho: {
+                        name: 'Interior Vermelho',
+                        price: 0,
+                        image: 'interiorvermelho.png'
+                    },
+                    branco: {
+                        name: 'Interior Branco',
+                        price: 0,
+                        image: 'interiorbranco.png'
+                    }
+                }
+            }
+        };
+
+        // Current configuration
+        const config = {
+            model: 'hyperion',
+            color: 'vermelho',
+            interior: 'azul',
+            currentAngle: 'h1',
+            currentView: 'exterior'
+        };
+
+        // Change car model
+        function changeModel(modelId) {
+            showLoading();
+            
+            // Update config
+            config.model = modelId;
+            
+            // Reset to first color and angle for the new model
+            const colors = Object.keys(models[modelId].colors);
+            config.color = colors[0];
+            config.currentAngle = 'h1';
+            
+            // Update model options UI
+            updateModelOptions();
+            
+            // Update color options
+            updateColorOptions();
+            
+            // Update interior options
+            updateInteriorOptions();
+            
+            // Update car image
+            updateCarImage();
+            
+            // Update gallery images
+            updateColorGallery();
+            
+            // Update summary
+            updateSummary();
+        }
+
+        // Update model options UI
+        function updateModelOptions() {
+            const modelOptionsContainer = document.getElementById('model-options');
+            modelOptionsContainer.innerHTML = '';
+            
+            Object.keys(models).forEach(modelId => {
+                const model = models[modelId];
+                const modelOption = document.createElement('div');
+                modelOption.className = `option-item ${config.model === modelId ? 'active' : ''}`;
+                modelOption.dataset.model = modelId;
+                modelOption.onclick = () => changeModel(modelId);
+                
+                const modelLabel = document.createElement('div');
+                modelLabel.className = 'option-label';
+                modelLabel.textContent = model.name;
+                
+                modelOption.appendChild(modelLabel);
+                modelOptionsContainer.appendChild(modelOption);
+            });
+        }
+
+        // Update color options based on current model
+        function updateColorOptions() {
+            const colorOptionsContainer = document.getElementById('color-options');
+            colorOptionsContainer.innerHTML = '';
+            
+            const modelColors = models[config.model].colors;
+            
+            Object.keys(modelColors).forEach((colorId) => {
+                const color = modelColors[colorId];
+                const colorOption = document.createElement('div');
+                colorOption.className = `color-option ${config.color === colorId ? 'active' : ''}`;
+                colorOption.onclick = () => {
+                    changeColor(colorId, color.name, color.price);
+                    // Switch back to exterior view when selecting a color
+                    switchView('exterior');
+                };
+                
+                const colorSample = document.createElement('div');
+                colorSample.className = 'color-sample';
+                colorSample.style.backgroundColor = color.code;
+                
+                colorOption.appendChild(colorSample);
+                colorOptionsContainer.appendChild(colorOption);
+            });
+        }
+
+        // Update interior options based on current model
+        function updateInteriorOptions() {
+            const interiorOptionsContainer = document.getElementById('interior-options');
+            interiorOptionsContainer.innerHTML = '';
+            
+            const modelInteriors = models[config.model].interiors;
+            
+            Object.keys(modelInteriors).forEach((interiorId) => {
+                const interior = modelInteriors[interiorId];
+                const interiorOption = document.createElement('div');
+                interiorOption.className = `interior-option ${config.interior === interiorId ? 'active' : ''}`;
+                interiorOption.onclick = () => {
+                    changeInterior(interiorId, interior.name, interior.price);
+                    // Switch to interior view when selecting an interior
+                    switchView('interior');
+                };
+                
+                const interiorImage = document.createElement('img');
+                interiorImage.className = 'interior-preview';
+                interiorImage.src = interior.image;
+                interiorImage.alt = interior.name;
+                
+                interiorOption.appendChild(interiorImage);
+                interiorOptionsContainer.appendChild(interiorOption);
+            });
+        }
+
+        // Change car color
+        function changeColor(colorId, colorName, colorPrice) {
+            showLoading();
+            
+            // Update config
+            config.color = colorId;
+            
+            // Update active state in UI
+            updateColorOptions();
+            
+            // Update gallery images
+            updateColorGallery();
+            
+            // Update car image
+            updateCarImage();
+            
+            // Update selection highlight
+            updateSelectionHighlight();
+            
+            // Update summary
+            updateSummary();
+        }
+
+        // Change interior
+        function changeInterior(interiorId, interiorName, interiorPrice) {
+            showLoading();
+            
+            // Update config
+            config.interior = interiorId;
+            
+            // Update active state in UI
+            updateInteriorOptions();
+            
+            // Update interior image
+            const interiorImage = models[config.model].interiors[interiorId].image;
+            document.getElementById('interior-image').src = interiorImage;
+            
+            // Update selection highlight
+            updateSelectionHighlight();
+            
+            // Update summary
+            updateSummary();
+            
+            hideLoading();
+        }
+
+        // Switch between exterior and interior views
+        function switchView(view) {
+            config.currentView = view;
+            
+            // Update views
+            document.querySelector('.exterior-view').classList.toggle('active', view === 'exterior');
+            document.querySelector('.interior-view').classList.toggle('active', view === 'interior');
+            
+            // Show/hide angle controls
+            document.querySelector('.car-view-controls').style.display = view === 'exterior' ? 'flex' : 'none';
+            
+            // Show/hide color gallery
+            document.getElementById('color-gallery').classList.toggle('hidden', view === 'interior');
+        }
+
+        // Change angle
+        function changeAngle(angle) {
+            config.currentAngle = angle;
+            
+            // Update active state in UI
+            document.querySelectorAll('.angle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Activate the clicked button
+            if (event.target.classList.contains('angle-btn')) {
+                event.target.classList.add('active');
+                // Find and activate the corresponding gallery item
+                const btnIndex = Array.from(document.querySelectorAll('.angle-btn')).indexOf(event.target);
+                document.querySelectorAll('.gallery-item')[btnIndex].classList.add('active');
+            } else if (event.target.classList.contains('gallery-item')) {
+                event.target.classList.add('active');
+                // Find and activate the corresponding angle button
+                const angleIndex = Array.from(document.querySelectorAll('.gallery-item')).indexOf(event.target);
+                document.querySelectorAll('.angle-btn')[angleIndex].classList.add('active');
+            }
+            
+            updateCarImage();
+        }
+
+        // Update car image based on current configuration
+        function updateCarImage() {
+            const carImage = document.getElementById('car-image');
+            const modelData = models[config.model];
+            const colorData = modelData.colors[config.color];
+            const newImageSrc = colorData.images[config.currentAngle];
+            
+            // Preload the image
+            const img = new Image();
+            img.src = newImageSrc;
+            
+            img.onload = function() {
+                carImage.src = newImageSrc;
+                hideLoading();
+            };
+            
+            img.onerror = function() {
+                // Fallback in case image fails to load
+                carImage.src = 'h1vermelho.png';
+                hideLoading();
+            };
+        }
+
+        // Update color gallery images
+        function updateColorGallery() {
+            const gallery = document.getElementById('color-gallery');
+            const modelData = models[config.model];
+            const colorData = modelData.colors[config.color];
+            
+            // Update all gallery images
+            const galleryItems = gallery.querySelectorAll('.gallery-item');
+            galleryItems[0].querySelector('img').src = colorData.images.h1;
+            galleryItems[1].querySelector('img').src = colorData.images.h2;
+            galleryItems[2].querySelector('img').src = colorData.images.h3;
+            galleryItems[3].querySelector('img').src = colorData.images.h4;
+            
+            // Update active item
+            galleryItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            galleryItems[0].classList.add('active');
+        }
+
+        // Update selection highlight
+        function updateSelectionHighlight() {
+            const modelData = models[config.model];
+            const colorData = modelData.colors[config.color];
+            const interiorData = modelData.interiors[config.interior];
+            
+            document.getElementById('selected-color').style.backgroundColor = colorData.code;
+            document.getElementById('selected-color-text').textContent = colorData.name;
+            document.getElementById('selected-interior').src = interiorData.image;
+            document.getElementById('selected-interior-text').textContent = interiorData.name;
+        }
+
+        // Update configuration summary
+        function updateSummary() {
+            const modelData = models[config.model];
+            const colorData = modelData.colors[config.color];
+            const interiorData = modelData.interiors[config.interior];
+            
+            document.getElementById('summary-model').textContent = modelData.name;
+            document.getElementById('summary-color').textContent = colorData.name;
+            document.getElementById('summary-interior').textContent = interiorData.name;
+            
+            // Calculate and update total price
+            const totalPrice = modelData.basePrice + colorData.price + interiorData.price;
+            
+            document.getElementById('summary-total').textContent = `R$ ${totalPrice.toLocaleString('pt-BR')}`;
+        }
+
+        // Toggle summary visibility
+        function toggleSummary() {
+            const summary = document.getElementById('summary-container');
+            summary.classList.toggle('visible');
+        }
+
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        // Save configuration
+        function saveConfiguration() {
+            showLoading();
+            
+            // In a real implementation, this would send the config to a server
+            setTimeout(() => {
+                hideLoading();
+                
+                // Show saved configuration page
+                showSavedConfiguration();
+                
+                console.log('Saved configuration:', {
+                    model: config.model,
+                    color: config.color,
+                    interior: config.interior,
+                    price: models[config.model].basePrice + 
+                           models[config.model].colors[config.color].price + 
+                           models[config.model].interiors[config.interior].price
+                });
+            }, 1500);
+        }
+
+        // Show saved configuration page
+        function showSavedConfiguration() {
+            const modelData = models[config.model];
+            const colorData = modelData.colors[config.color];
+            const interiorData = modelData.interiors[config.interior];
+            const totalPrice = modelData.basePrice + colorData.price + interiorData.price;
+            
+            // Update saved configuration page
+            document.getElementById('saved-car-image').src = colorData.images.h1;
+            document.getElementById('saved-car-color').textContent = colorData.name;
+            document.getElementById('saved-interior-image').src = interiorData.image;
+            document.getElementById('saved-interior-name').textContent = interiorData.name;
+            document.getElementById('saved-model-name').textContent = modelData.name;
+            document.getElementById('saved-color-name').textContent = colorData.name;
+            document.getElementById('saved-interior-type').textContent = interiorData.name;
+            document.getElementById('saved-total-price').textContent = `R$ ${totalPrice.toLocaleString('pt-BR')}`;
+            
+            // Show saved configuration page
+            document.getElementById('saved-config-container').style.display = 'block';
+            document.querySelector('.configurator-container').style.display = 'none';
+        }
+
+        // Show contact modal
+        function showContactModal() {
+            document.getElementById('contact-modal').style.display = 'flex';
+            document.getElementById('contact-confirmation').style.display = 'block';
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+
+        // Hide contact modal
+        function hideContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+
+        // Show contact form
+        function showContactForm() {
+            document.getElementById('contact-confirmation').style.display = 'none';
+            document.getElementById('contact-form').style.display = 'block';
+        }
+
+        // Hide contact form
+        function hideContactForm() {
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('contact-confirmation').style.display = 'block';
+        }
+
+        // Submit contact form
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            // In a real implementation, this would send the form data to a server
+            setTimeout(() => {
+                document.getElementById('contact-form').style.display = 'none';
+                document.getElementById('success-message').style.display = 'block';
+            }, 1000);
+        }
+
+        // Close success message
+        function closeSuccessMessage() {
+            hideContactModal();
+            window.location.href = './senventh.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide loading after everything is ready
+            setTimeout(hideLoading, 1000);
+            
+            // Set initial active buttons
+            document.querySelector('.angle-btn').classList.add('active');
+            
+            // Initialize options
+            updateModelOptions();
+            updateColorOptions();
+            updateInteriorOptions();
+            
+            // Update selection highlight
+            updateSelectionHighlight();
+            
+            // Update summary with initial values
+            updateSummary();
+        });
+    </script>
+</body>
+</html>
