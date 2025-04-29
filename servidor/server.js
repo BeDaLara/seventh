@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS automático + headers manuais
 app.use(cors({
-  origin: 'https://bedalara.github.io/seventh',
+  origin: 'https://bedalara.github.io',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
