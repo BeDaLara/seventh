@@ -1081,7 +1081,7 @@
                 <form id="contact-form-data" onsubmit="submitContactForm(event)">
                     <div class="form-group">
                         <label class="form-label required">Para qual revendedor você deseja enviar sua solicitação?</label>
-                        <select class="form-select" required>
+                        <select class="form-select" name="revendedor" required>
                             <option value="">Selecione um revendedor</option>
                             <option value="distribuidor-sp">Distribuidor São Paulo</option>
                             <option value="distribuidor-rj">Distribuidor Rio de Janeiro</option>
@@ -1089,66 +1089,66 @@
                             <option value="distribuidor-pr">Distribuidor Paraná</option>
                         </select>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Você já é cliente da SeventhGear?</label>
                         <div class="radio-group">
                             <label class="radio-option">
-                                <input type="radio" name="existing-customer" value="sim" required> Sim
+                                <input type="radio" name="cliente" value="Sim" required> Sim
                             </label>
                             <label class="radio-option">
-                                <input type="radio" name="existing-customer" value="nao"> Não
+                                <input type="radio" name="cliente" value="Não"> Não
                             </label>
                         </div>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Primeiro nome</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" name="nome" required>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Sobrenome</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" name="sobrenome" required>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label">Endereço</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="endereco">
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Cidade</label>
-                        <input type="text" class="form-control" required>
+                        <input type="text" class="form-control" name="cidade" required>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Como você prefere ser contatado?</label>
                         <div class="radio-group">
                             <label class="radio-option">
-                                <input type="radio" name="contact-preference" value="email" required> E-mail
+                                <input type="radio" name="contato" value="E-mail" required> E-mail
                             </label>
                             <label class="radio-option">
-                                <input type="radio" name="contact-preference" value="telefone"> Telefone
+                                <input type="radio" name="contato" value="Telefone"> Telefone
                             </label>
                         </div>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">E-mail</label>
-                        <input type="email" class="form-control" required>
+                        <input type="email" class="form-control" name="email" required>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label class="form-label required">Telefone</label>
-                        <input type="tel" class="form-control" required>
+                        <input type="tel" class="form-control" name="telefone" required>
                     </div>
-                    
+                
                     <div class="form-submit">
                         <button type="button" class="btn btn-secondary" onclick="hideContactForm()">CANCELAR</button>
                         <button type="submit" class="btn">ENVIAR SOLICITAÇÃO</button>
                     </div>
-                </form>
+                </form>                
             </div>
             
             <div class="success-message" id="success-message">
@@ -1803,15 +1803,37 @@
         }
 
         // Submit contact form
-        function submitContactForm(event) {
-            event.preventDefault();
-            
-            // In a real implementation, this would send the form data to a server
-            setTimeout(() => {
-                document.getElementById('contact-form').style.display = 'none';
-                document.getElementById('success-message').style.display = 'block';
-            }, 1000);
+async function submitContactForm(event) {
+    event.preventDefault();
+
+    const form = document.getElementById('contact-form-data');
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    try {
+        const response = await fetch('http://localhost:3000/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+        } else {
+            alert('Erro ao enviar solicitação. Tente novamente.');
         }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao enviar solicitação.');
+    }
+}
+
 
         // Close success message
         function closeSuccessMessage() {
