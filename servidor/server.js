@@ -8,17 +8,19 @@ const PORT = process.env.PORT || 3000;
 
 // CORS automático + headers manuais
 app.use(cors({
-  origin: ['https://bedalara.github.io', 'https://bedalara.github.io/seventh'],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-}));
+    origin: ['https://bedalara.github.io', 'https://bedalara.github.io/seventh'],  // Permitir ambas as URLs
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true,  // Permite enviar cookies (se necessário)
+  }));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://bedalara.github.io/seventh');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);  // Permite qualquer uma das origens
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', 'true');  // Se você estiver usando cookies
+    next();
+  });
 
 app.use(express.json());
 
